@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ログイン</title>
+	<link rel="stylesheet" th:href="@{/css/account.css}" />
+</head>
+
+<body>
+	<header>
+		<!-- 共通のヘッダーをインクルード -->
+		<div th:replace="fragments/header.html"></div>
+	</header>
+	<div class="container">
+		<div class="form_account">
+			<div class="form_item">
+				<h1>ログイン</h1>
+			</div>
+
+			<form th:action="@{/login}" method="post" th:object="${user}">
+				<div class="form_item">
+					<label for="email">メールアドレス</label><br>
+					<input type="email" id="email" th:field="*{mailAddress}" placeholder="sample@sample.com">
+				</div>
+
+				<div class="form_item">
+					<label for="password">パスワード</label><br>
+					<input type="password" id="password" th:field="*{password}" placeholder="***">
+				</div>
+				
+				<div class="form_item validation">
+					<div th:if="${errorMessage}" class="alert alert-danger">
+						<p th:text="${errorMessage}"></p>
+					</div>
+					<span th:if="${#fields.hasErrors('mailAddress')}" th:errors="*{mailAddress}"></span><br>
+					<span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span><br>
+				</div>
+				<div class="form_item">
+					<button type="submit">ログイン</button>
+				</div>
+			</form>
+
+		</div>
+	</div>
+
+</body>
+
+</html>

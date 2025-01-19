@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>支払い情報</title>
+	<link rel="stylesheet" th:href="@{/css/payment.css}" />
+	<script src="https://js.stripe.com/v3/"></script> <!--決済システムのStripe.jsを読み込む -->
+</head>
+
+<div>
+	<header>
+		<!-- 共通のヘッダーをインクルード -->
+		<div th:replace="fragments/header.html"></div>
+	</header>
+	<div class="container">
+		<h1 class="page_title">支払い情報入力</h1>
+		<div class="payment">
+			<div class="payment_left">
+				<form th:object="${payment}" th:action="@{/processPayment}" method="post" id="payment-form">
+
+					<!--label for="cardNumber">カード番号:</label-->
+					<label class="form_title" for="cardNumber">クレジットカード情報</label><br>
+					<div class="payment_form" id="card-element">
+						<input type="text" id="cardNumber" name="cardNumber" th:field="*{cardNumber}"
+							placeholder="XXXX-XXXX-XXXX-XXXX">
+						<input type="text" id="expirationMonth" name="expirationMonth" th:field="*{expirationMonth}"
+							placeholder="MM">
+						<input type="text" id="expirationYear" name="expirationYear" th:field="*{expirationYear}"
+							placeholder="YY">
+					</div>
+					<!-- 顯示錯誤信息 -->
+					<span class="validation" id="card-errors" role="alert"></span><br>
+					<div class="card_holder">
+						<label class="form_title" for="cardHolder">カード名義人</label><br>
+						<input class="payment_form" type="text" id="cardHolder" name="cardHolder"
+							th:field="*{cardHolder}" placeholder="TARO TANAKA">
+						<div>
+							<span class="validation" th:if="${#fields.hasErrors('cardHolder')}"
+								th:errors="*{cardHolder}"></span><br>
+						</div>
+					</div>
+					<div class="item_border_left"></div>
+
+					<!-- 住所情報 -->
+					<div class="form_half">
+						<div class="first_name">
+							<label class="form_title" for="firstName">氏名（姓）</label><br>
+							<input class="payment_form_half" type="text" id="firstName" name="firstName"
+								th:field="*{firstName}" placeholder="田中"><br>
+							<div>
+								<span class="validation" th:if="${#fields.hasErrors('firstName')}"
+									th:errors="*{firstName}"></span>
+							</div>
+						</div>
+						<div class="last_neme">
+							<label class="form_title" for="lastName">氏名（名）</label><br>
+							<input class="payment_form_half" type="text" id="lastName" name="lastName"
+								th:field="*{lastName}" placeholder="太郎">
+							<div>
+								<span class="validation" th:if="${#fields.hasErrors('lastName')}"
+									th:errors="*{lastName}"></span><br>
+							</div>
+						</div>
+
+
+					</div>
+					<div class="form_half">
+						<div class="zip_code">
+							<label class="form_title" for="zipCode1">郵便番号</label><br>
+							<input class="payment_form_quarter" type="text" id="zipCode1" name="zipCode1"
+								th:field="*{zipCode1}" placeholder="111">
+							<span>-</span>
+							<!--					<label class="payment_title" for="zipCode2">郵便番号（4桁）:</label><br>-->
+							<input class="payment_form_quarter" type="text" id="zipCode2" name="zipCode2"
+								th:field="*{zipCode2}" placeholder="1111">
+							<div>
+								<span class="validation" th:if="${#fields.hasErrors('zipCode1')}"
+									th:errors="*{zipCode1}"></span><br>
+								<span class="validation" th:if="${#fields.hasErrors('zipCode2')}"
+									th:errors="*{zipCode2}"></span><br>
+							</div>
+						</div>
+
+
+						<div class="prefecture">
+							<label class="form_title"
+								for="prefecture">都道府県</label><br><!--th:field追加したらリセットされないが合計金額のところはリセット-->
+							<select class="payment_form_prefecture" id="prefecture" name="prefecturesId"
+								th:field="${payment.prefecturesId}" onchange="updateShippingInfo()">
+								<option value="">選択してください</option>
+								<!-- カテゴリー情報から選択肢を動的に生成 -->
+								<option th:each="prefecture : ${prefectures}" th:value="${prefecture.id}"
+									th:text="${prefecture.prefecture}"
+									th:selected="${prefecture.id == selectedPrefectureId}">
+								</option>
+							</select>
+							<div>
+								<span class="validation" th:if="${#fields.hasErrors('prefecturesId')}"
+									th:errors="*{prefecturesId}"></span><br>
+							</div>
+						</div>
+					</div>
+
+					<label class="form_title" for="address">住所</label><br>
+					<input class="payment_form" id="address" name="address" th:field="*{address}"
+						placeholder="東京都新宿区西新宿1-2-3 ○○マンション101号室"></input><br>
+					<span class="validation" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span><br>
+			</div>
+			<div class="payment_right">
+
+				<!--商品+税+送料の合計金額とお届け日数を表示する部分 -->
+				<p class="right_title">アイテム合計</p>
+				<p class="price_with_tax">¥<span id="price-with-tax"
+						th:text="${#numbers.formatInteger(priceWithTax, 0, 'COMMA')}"></span>(税込み)</p>
+				<p class="right_title">送料</p>
+				<p class="price_postage">¥<span id="shipping-cost" th:text="${postage}"></span></p>
+				<p class="right_title">お支払い合計</p>
+				<p class="totle_price">¥<span id="total-price"
+						th:text="${#numbers.formatInteger(totalPrice, 0, 'COMMA')}"></span></p>
+				<div class="item_border"></div>
+
+				<p class="right_title">商品到着予定日</p>
+				<div class="delive_date" id="delivery-days" th:text="未定"></div>
+				<script src="js/script.js"></script>
+				<div class="item_border"></div>
+
+				<!-- 添加一個隱藏的字段來保存Stripe支付所需的參數 -->
+				<input type="hidden" id="stripeToken" name="stripeToken" value="">
+
+				<button class="pay_btn" type="submit" id="submit-button"><img src="/img/payment.png"
+						alt="">注文を確認する</button>
+				</form>
+				<a class="go_products" th:href="@{/products}">お買い物を続ける</a>
+
+				</p>
+			</div>
+		</div>
+		<!--決済システム-->
+		<script>
+			var stripe = Stripe('pk_test_51OjbgpDqOEESiB3bKZX8MpHayMgQT8C93FUDzRSFhCaf9jTolNiz3K975PY88skgBV7AIP5weMX0mlfgXIZsE3vc00UK9cL79S');//ここにStripeの公開鍵を入力-
+			var elements = stripe.elements();
+
+			// カード要素の作成とマウント
+			var card = elements.create('card', {hidePostalCode: true});
+			card.mount('#card-element');
+
+			// カード情報の変更イベントリスナーの追加
+			card.addEventListener('change', function (event) {
+				var displayError = document.getElementById('card-errors');
+				if (event.error) {
+					displayError.textContent = event.error.message;
+				} else {
+					displayError.textContent = '';
+				}
+			});
+
+			// フォームの送信イベントリスナーの追加
+			var form = document.getElementById('payment-form');
+			form.addEventListener('submit', function (event) {
+				event.preventDefault();// デフォルトの送信動作をキャンセル
+
+				// カード情報のトークン化
+				stripe.createToken(card).then(function (result) {
+					if (result.error) {
+						console.log('Error creating token:', result.error);
+					} else {
+						// トークンを隠しフィールドに設定
+						document.getElementById('stripeToken').value = result.token.id;
+
+						// フォーム送信
+						form.submit();
+					}
+				});
+			});
+		</script>
+
+		</body>
+
+</html>

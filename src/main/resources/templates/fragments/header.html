@@ -1,0 +1,62 @@
+<link rel="stylesheet" th:href="@{/css/style.css}" />
+<div class="header_container">
+	<div class="header_upper">
+		<!-- ロゴマーク -->
+		<div class="header_upper_left">
+			<a href="/"><img class="top_button" src="/img/top_button.png"
+					alt=""><!--img class="store_name" src="店舗名画像URL" alt=""--></a>
+			<!--管理者側のヘッダー-->
+			<span class="admin_header" th:if="${session.isAdmin}"><a href="/admin/top">管理ページ</a></span>
+		</div>
+		<!-- 上のほうのナビゲーション -->
+		<div class="header_upper_right">
+			<span th:if="${session.loggedInUser != null && (session.isAdmin == null || !session.isAdmin)}">
+				<!-- ユーザーがログインしており、かつ管理者ではない場合のみ表示 -->
+				<img class="header_icon" src="/img/icon.png">
+				<span class="header_username header_buttons" th:text="${session.loggedInUser.userName}"></span>
+				<span class="header_username_honor">さん</span>
+				<span class="header_border"></span>
+				<a class="header_orders header_buttons" href="/orders">注文履歴</a>
+				<a class="header_logout header_buttons" href="/logout">ログアウト</a>
+				<a href="/cart"><img class="header_cart" src="/img/cart.png" alt="カート"></a>
+			</span>
+			<!-- ログインしていない場合はログインリンクを表示 -->
+			<span th:unless="${session.loggedInUser != null}">
+				<a class="header_register header_buttons" href="/register">新規登録</a>
+				<a class="header_login header_buttons" href="/login">ログイン</a>
+				<a href="/cart"><img class="header_cart" src="/img/cart.png" alt="カート"></a>
+			</span>
+
+			<!-- ハンバーガーメニュー -->
+			<div class="hamburger_menu">
+				<!-- ハンバーガーメニューの表示・非表示を切り替えるチェックボックス -->
+				<input type="checkbox" id="menu_btn_check">
+
+				<!-- ハンバーガーアイコン -->
+				<label for="menu_btn_check" class="menu_btn"><span></span></label>
+
+				<div class="menu_content">
+					<div th:if="${(session.isAdmin == null || !session.isAdmin)}">
+						<a href="/">トップページ</a>
+						<div class="hamburger_menu_border"></div>
+						<a href="/cart">カートを見る</a>
+						<div class="hamburger_menu_border"></div>
+						<a href="/orders">購入履歴</a>
+					</div>
+					<div th:if="${session.isAdmin}">
+						<a href="/admin/top">管理ページ</a>
+						<div class="hamburger_menu_border"></div>
+						<a href="/logout">ログアウト</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 下のほうのナビゲーション -->
+	<div class="header_lower" th:if="${(session.isAdmin == null || !session.isAdmin)}">
+		<!-- 商品のカテゴリー -->
+		<a href="">洋菓子</a>
+		<a href="">和菓子</a>
+		<a href="">スナック菓子</a>
+	</div>
+</div>

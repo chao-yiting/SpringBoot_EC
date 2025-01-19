@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>管理ページ</title>
+	<link rel="stylesheet" th:href="@{/css/admin/admin_top.css}" />
+</head>
+
+<body>
+	<!-- 共通のヘッダーをインクルード -->
+	<div th:replace="fragments/header.html"></div>
+	<div class="container">
+		<div class="item">
+			<h1>管理ページ</h1>
+		</div>
+		<div class="item">
+			<ul>
+				<li><a th:href="@{/admin/products}">商品管理</a></li>
+				<li><a th:href="@{/admin/categories}">商品カテゴリー管理</a></li>
+				<li><a th:href="@{/admin/users}">ユーザ管理</a></li>
+				<li><a th:href="@{/admin/orders}">注文管理</a></li>
+			</ul>
+		</div>
+	</div>

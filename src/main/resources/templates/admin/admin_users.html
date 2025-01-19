@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ユーザー管理</title>
+	<link rel="stylesheet" th:href="@{/css/admin/admin_users.css}" />
+</head>
+
+<body>
+	<!-- 共通のヘッダーをインクルード -->
+	<div th:replace="fragments/header.html"></div>
+
+	<div class="container">
+		<h1 class="page_title">ユーザー管理</h1>
+		<!-- カテゴリーのリストを表示 -->
+		<div class="users">
+			<table>
+				<tr>
+					<th class="user_name">ユーザー名</th>
+					<th class="authority">ユーザー権限</th>
+					<th class="delete">削除</th>
+				</tr>
+				<tr th:each="user : ${users}">
+					<td class="user_name" th:text="${user.userName}"></td>
+					<td class="authority">
+						<form class="change_authority" th:action="@{'/updateUserAuthority/' + ${user.id}}" method="post"
+							th:object="${userRequest}">
+							<select name="userAuthority" onchange="this.form.submit()">
+								<option value="0" th:selected="${user.userAuthority == 0}">一般ユーザー</option>
+								<option value="1" th:selected="${user.userAuthority == 1}">管理者</option>
+							</select>
+							<!--input class="red_btn" type="submit" value="変更"-->
+							<span class="validation" th:if="${#fields.hasErrors('userAuthority')}"
+								th:errors="*{userAuthority}"></span><br>
+
+						</form>
+					</td>
+					<td class="delete">
+						<form th:action="@{'/deleteUser/' + ${user.id}}" method="post" th:object="${user}">
+							<button type="submit" class="red_btn">削除</button>
+						</form>
+					</td>
+				</tr>
+			</table>
+			<!--	<a th:href="@{/admin/top}" class="btn btn-primary">管理TOPへ戻る</a>-->
+		</div>
+	</div>
+	<script>
+		document.querySelector('select[name="userAuthority"]').addEventListener('change', function () {
+			// プルダウンで選択されたときの処理を記述
+			var form = this.closest('form'); // 選択された要素に最も近い<form>要素を取得
+			var formData = new FormData(form); // <form>要素内のデータをFormDataオブジェクトとして取得
+			var userId = form.getAttribute('action').split('/').pop(); // ユーザーIDを取得
+			formData.append('_method', 'POST'); // Spring BootではPATCHをシミュレートするために必要
+
+			// フォームデータを含むAjaxリクエストを送信
+			fetch('/updateUserAuthority/' + userId, {
+				method: 'POST', // リクエストの種類を指定
+				body: formData // リクエストに含めるデータを指定
+				/*}).then(response => { // レスポンスの処理（省略可）
+					if (response.ok) {
+						// 成功時の処理を記述
+					} else {
+						// エラー時の処理を記述
+					}
+				}).catch(error => { // エラーハンドリング
+					console.error('Error:', error);*/
+			});
+		});
+	</script>
+
+</body>
+
+</html>

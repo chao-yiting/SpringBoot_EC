@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>商品カテゴリー管理</title>
+	<link rel="stylesheet" th:href="@{/css/admin/admin_categories.css}" />
+</head>
+
+<body>
+	<!-- 共通のヘッダーをインクルード -->
+	<div th:replace="fragments/header.html"></div>
+
+	<div class="container">
+		<h1 class="page_title">商品カテゴリー管理</h1>
+		<div class="add_category">
+			<form th:action="@{/addCategory}" method="post" th:object="${category}">
+				<label class="form_title" for="categoryName">カテゴリー追加</label>
+				<div class="form">
+					<input type="text" id="categoryName" th:field="*{categoryName}"><!--required-->
+
+					<button class="red_btn" type="submit">登録</button>
+				</div>
+				<p><span class="validation" th:if="${#fields.hasErrors('categoryName')}"
+						th:errors="*{categoryName}"></span></p>
+			</form>
+		</div>
+
+		<!-- カテゴリーのリストを表示 -->
+		<div class="categories">
+			<table>
+				<tbody>
+					<tr>
+						<th class="category_name">カテゴリー名</th>
+						<th class="edit">編集</th>
+					</tr>
+
+					<tr th:each="category : ${categories}">
+						<!--						<td class="category_name" th:text="${category.categoryName}">-->
+						<td>
+							<div id="categoryContent">
+								<span th:text="${category.categoryName}" id="categoryName"></span>
+								<form th:action="@{'/updateCategory/' + ${category.id}}" method="post"
+									th:object="${updateCategory}" style="display: none;">
+									<input type="text" th:name="categoryName" th:value="${category.categoryName}"
+										id="editCategoryName" class="edit_form">
+									<button class="red_btn edit_submit" type="submit">確定</button>
+									<p><span class="validation" th:if="${#fields.hasErrors('categoryName')}"
+											th:errors="*{categoryName}"></span></p>
+								</form>
+							</div>
+						</td>
+						<!--td>
+							<div id="edit_form">
+								<form th:action="@{'/updateCategory/' + ${category.id}}" method="post"
+									th:object="${updateCategory}">
+									<input type="text" th:name="categoryName"
+										th:value="${category.categoryName}"--><!--required th:field="*{categoryName}"-->
+
+						<!--button class="red_btn" type="submit">確定</button>
+						<p><span th:if="${#fields.hasErrors('categoryName')}" th:errors="*{categoryName}"
+								style="color: red;"></span></p>
+						</form>
+						</td-->
+						<td>
+							<div class="btns">
+								<button class="red_btn editButton" type="button">編集</button>
+
+								<form th:action="@{'/deleteCategory/' + ${category.id}}" method="post"
+									th:object="${category}">
+									<button type="submit" class="black_btn">削除</button>
+								</form>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<!--script>
+		function showEditForm() {
+			var form = document.getElementById("editForm");
+			form.style.display = "block"; // フォームを表示する
+		}
+	</script-->
+	<script>
+		document.querySelectorAll('.editButton').forEach(button => {
+			button.addEventListener('click', function () {
+				const categoryContent = this.closest('tr').querySelector('#categoryContent');
+				const categoryName = categoryContent.querySelector('#categoryName');
+				const editForm = categoryContent.querySelector('form');
+
+				categoryName.style.display = 'none';
+				editForm.style.display = 'block';
+			});
+		});
+	</script>
+
+</body>
+
+</html>

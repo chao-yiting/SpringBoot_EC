@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>購入完了</title>
+	<link rel="stylesheet" th:href="@{/css/thanks.css}" />
+</head>
+
+<body>
+	<header>
+		<!-- 共通のヘッダーをインクルード -->
+		<div th:replace="fragments/header.html"></div>
+	</header>
+	<div class="container">
+		<div class="item">
+			<h1>購入完了</h1>
+		</div>
+		<div class="item">
+			<p>ご購入いただきありがとうございます。</p>
+			<p>商品は迅速に梱包しお届け先へ発送いたします。</p>
+			<p>発送に関する詳細情報は、ご登録のメールアドレスにお知らせいたしますのでご確認ください。</p>
+			<p>ご注文内容に誤りがある場合や、お問い合わせがある場合は、カスタマーサポートまでお気軽にお知らせください。</p>
+		</div>
+		<div class="item btn">
+			<a th:href="@{/}">TOPへ戻る</a>
+		</div>
+	</div>
+
+</body>
+
+</html>

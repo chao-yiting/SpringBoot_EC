@@ -1,0 +1,164 @@
+.product {
+	display: flex;
+	padding: 60px 80px;
+}
+
+.product_left {
+	display: flex;
+	flex: 1;
+}
+
+.product_right {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	padding-left: 40px;
+}
+
+.product_image {
+	width: 500px;
+	height: 500px;
+	background-color: #F6F6F6;
+}
+
+.product_image img {
+	width: 500px;
+	height: 500px;
+}
+
+.product_category {
+	font-family: Noto Sans CJK JP;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 20px;
+	text-align: left;
+	color: #8E8E8E;
+}
+
+.product_name {
+	font-family: Noto Sans CJK JP;
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 35px;
+	text-align: left;
+	color: #343434;
+	padding: 5px 0;
+}
+
+.product_price {
+	font-family: Noto Sans CJK JP;
+	font-size: 28px;
+	font-weight: 700;
+	line-height: 40.5px;
+	text-align: left;
+	color: #343434;
+	padding: 5px 0;
+}
+
+.product_stock {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 154px;
+	height: 30px;
+	border-radius: 4px;
+	background: #D0C0C0;
+
+	font-family: Noto Sans CJK JP;
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 17px;
+	color: #FFFFFF;
+	margin: 15px 0;
+}
+
+.product_quantity_title {
+	font-family: Noto Sans CJK JP;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 20px;
+	color: #8E8E8E;
+	padding: 5px 0;
+}
+
+/*.quantity_selector {
+	align-items: center;
+	position: relative;
+	display: inline-block;
+
+	border: 2px solid #000000
+}*/
+
+.product_quantity {
+	width: 120px;
+	height: 40px;
+	border: 1px solid #343434;
+	border-radius: 4px;
+
+	font-family: Noto Sans CJK JP;
+	font-size: 18px;
+	font-weight: 400;
+	line-height: 26px;
+	padding: 0 10px;
+
+
+	/*appearance: none;
+	cursor: pointer;*/
+}
+
+.cart_btn {
+	width: 500px;
+	height: 60px;
+	border: none;
+	border-radius: 4px;
+	background: #DB553E;
+
+	font-family: Noto Sans CJK JP;
+	font-size: 20px;
+	font-weight: 700;
+	/*	line-height: 29px;*/
+	text-align: center;
+	color: #FFFFFF;
+	margin-top: 20px;
+	cursor: pointer;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+}
+
+.cart_btn img {
+	width: 27px;
+	height: 27px;
+	padding-right: 10px;
+}
+
+.item_border {
+	border: 1px solid #CDCDCD;
+	width: 500px;
+	margin: 20px 0;
+}
+
+.product_description {
+	word-wrap: break-word;
+	Width: 500px;
+	font-family: Noto Sans CJK JP;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 20px;
+	text-align: left;
+	color: #343434;
+}
+
+.go_products {
+	width: 500px;
+	font-family: Noto Sans CJK JP;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 23px;
+	text-align: center;
+	text-decoration: underline;
+	color: #343434;
+	padding-top: 60px;
+}

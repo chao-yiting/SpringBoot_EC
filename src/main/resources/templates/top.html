@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Topページ</title>
+</head>
+
+<body>
+	<header>
+		<!-- 共通のヘッダーをインクルード -->
+		<div th:replace="fragments/header.html"></div>
+	</header>
+	ここはトップページです。
+	<a th:href="@{/products}">商品一覧はこちらです。</a><br>
+</body>
+
+</html>

@@ -1,0 +1,139 @@
+.container {
+	flex-direction: column;
+}
+
+.page_title {
+	height: 35px;
+	padding: 55px 0 20px 0;
+	/*	padding-top: 55px;*/
+
+	font-family: Noto Sans CJK JP;
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 35px;
+	text-align: center;
+}
+
+.products {
+	margin: 20px auto;
+}
+
+table,
+th,
+td {
+	border: 1px solid #343434;
+}
+
+th {
+	height: 35px;
+	/*	gap: 10px;*/
+	background: #343434;
+
+	font-family: Inter;
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 15px;
+	text-align: center;
+	color: #FFFFFF;
+}
+
+td {
+	height: 140px;
+	font-family: Inter;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 17px;
+	color: #343434;
+	padding: 0 10px;
+}
+
+.product_title_image,
+.edit {
+	width: 138px;
+}
+
+.product_data {
+	width: 108px;
+}
+
+.product_title_description {
+	width: 428px;
+}
+
+.product_image {
+	background-color: #D9D9D9;
+	width: 120px;
+	height: 120px;
+}
+
+.edit_btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100px;
+	height: 40px;
+	border-radius: 4px;
+	border: none;
+	background: #DB553E;
+
+	font-family: Noto Sans CJK JP;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 23px;
+	color: #FFFFFF;
+	margin: 0 auto;
+}
+
+.product_description {
+	word-break: break-all;
+	width: 420px;
+	font-family: Noto Sans CJK JP;
+	text-align: left;
+	color: #343434;
+}
+
+.add_and_search {
+	display: flex;
+	justify-content: space-between;
+	padding: 0 80px;
+}
+
+.create_product {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 150px;
+	height: 40px;
+	border-radius: 4px;
+	border: none;
+	background: #DB553E;
+
+	font-family: Noto Sans CJK JP;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 23px;
+	color: #FFFFFF;
+}
+
+.search_from {
+	border: 1px solid #343434;
+	width: 200px;
+	height: 50px;
+	border-radius: 4px;
+	padding: 0 16px;
+}
+
+.black_btn {
+	width: 100px;
+	height: 40px;
+	border-radius: 4px;
+	border: none;
+	background: #343434;
+
+	font-family: Noto Sans CJK JP;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 23px;
+	color: #FFFFFF;
+	/*	margin-left: 20px;*/
+}

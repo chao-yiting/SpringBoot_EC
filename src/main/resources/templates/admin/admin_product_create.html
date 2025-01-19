@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>商品登録</title>
+	<link rel="stylesheet" th:href="@{/css/admin/admin_product_detail.css}" />
+</head>
+
+<body>
+	<!-- 共通のヘッダーをインクルード -->
+	<div th:replace="fragments/header.html"></div>
+
+	<div class="container">
+		<h1 class="page_title">商品登録</h1>
+		<!--商品情報を登録するフォーム-->
+		<form class="product_create" th:action="@{/admin/products/addProduct}" method="post" th:object="${addProduct}"
+			enctype="multipart/form-data">
+			<!--商品情報のフォームフィールド -->
+			<div class="product_left">
+				<div class="product_image">
+					<img src="" alt="商品画像">
+				</div>
+				<input type="file" name="imageFile" accept="image/*">
+			</div>
+			<div class="product_right">
+				<label class="product_title" for="name">商品名</label>
+				<input class="product_name" type="text" id="name" name="name" th:field="*{name}">
+				<span class="validation" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span><br>
+
+
+				<label class="product_title" for="category">商品カテゴリー</label>
+				<select class="product_category" id="category" name="categoryId" th:field="*{categoryId}">
+					<option value="">選択してください</option>
+					<!--カテゴリー情報から選択肢を動的に生成 -->
+					<option th:each="category : ${categories}" th:value="${category.id}"
+						th:text="${category.categoryName}">
+					</option>
+				</select>
+				<span class="validation" th:if="${#fields.hasErrors('categoryId')}"
+					th:errors="*{categoryId}"></span><br>
+
+				<label class="product_title" for="price">商品価格</label>
+				<input class="product_price" type="number" id="price" name="price" th:field="*{price}">
+				<span class="validation" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span><br>
+
+				<label class="product_title" for="stock">商品在庫</label>
+				<input class="product_stock" type="number" id="stock" name="stock" th:field="*{stock}">
+				<span class="validation" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></span><br>
+
+				<label class="product_title" for="description">商品説明</label>
+				<textarea class="product_description" type="text" id="description" name="description"
+					th:field="*{description}"></textarea>
+				<span class="validation" th:if="${#fields.hasErrors('description')}"
+					th:errors="*{description}"></span><br>
+
+				<button class="create_btn" type="submit" name="submitButton">登録</button>
+		</form>
+		<a th:href="@{/admin/products}" class="go_admin_products">商品管理へ戻る</a>
+	</div>
+</body>
+
+</html>

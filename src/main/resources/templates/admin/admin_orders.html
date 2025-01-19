@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>注文管理</title>
+	<link rel="stylesheet" th:href="@{/css/admin/admin_orders.css}" />
+</head>
+
+<body>
+	<header>
+		<!-- 共通のヘッダーをインクルード -->
+		<div th:replace="fragments/header.html"></div>
+	</header>
+	<div class="container">
+		<h1 class="page_title">注文管理</h1>
+
+		<div class="orders" th:each="groupEntry, order : ${groupedOrders}"><!--注文IDと注文リストのペアに対してループする-->
+			<div class="order">
+				<div class="order_left">
+					<div class="order_items" th:each="order : ${groupEntry.value}">
+						<div class="product_image">
+							<img th:src="${order.product.imagePath}" alt="">
+						</div>
+						<div class="cartItem_detail">
+							<p class="order_product_name" th:text="${order.product.name}"></p>
+							<p class="order_product_quantity" th:text="'数量:'+${order.quantity}"></p>
+							<p class="order_product_price"
+								th:text="'¥'+${#numbers.formatInteger(order.product.price, 0, 'COMMA')}"></p>
+						</div>
+					</div>
+				</div>
+				<div class="order_right">
+					<!-- orderGroupEntryがMap.Entryです。getKey()は注文ID、getValue()は注文リストを返します -->
+					<!--p th:text="'注文番号:'+${groupEntry.key}">注文番号</p--><!-- 注文IDを表示 -->
+					<div class="order_right_up">
+						<div class="user_name">
+							<p class="right_title">注文ユーザー名</p>
+							<p class="right_value" th:text="${groupEntry.value[0].user.userName}"></p>
+						</div>
+						<div class="sent_order">
+							<!--出荷ボタン-->
+							<form th:if="${groupEntry.value[0].orderStatus == 0}"
+								th:action="@{'/admin/updateOrderStatus/' + ${groupEntry.key}}" method="post">
+								<button type="submit">注文発送</button>
+							</form>
+						</div>
+					</div>
+					<div class="right_border"></div>
+					<div class="date">
+						<div class="order_date">
+							<p class="right_title">注文日</p>
+							<p class="right_value" th:text="${#dates.format(groupEntry.value[0].createdAt, 'M月dd日')}">
+							</p>
+						</div>
+						<div class="arrival_date">
+							<p class="right_title">到着予定日</p>
+							<p class="right_value">
+								<span th:if="${groupEntry.value[0].orderStatus == 0}">
+									<span th:text="発送準備中"></span>
+								</span>
+								<span th:if="${groupEntry.value[0].orderStatus == 1}">
+									<span th:text="${#dates.format(deliveryDate[groupEntry.key], 'M月dd日')}"></span>
+								</span>
+							</p>
+						</div>
+					</div>
+					<div class="right_border"></div>
+					<div class="price">
+						<div class="item_totle">
+							<p class="right_title">アイテム合計</p>
+							<p class="right_value"
+								th:text="'¥' + ${#numbers.formatInteger(itemTotalPrice[groupEntry.key], 0, 'COMMA')}">
+							</p>
+						</div>
+						<div class="postage">
+							<p class="right_title">送料</p>
+							<p class="right_value" th:text="'¥' + ${postage[groupEntry.key]}"></p>
+						</div>
+						<div class="totle_price">
+							<p class="right_title">お支払い合計</p>
+							<p class="right_value"
+								th:text="'¥'+${#numbers.formatInteger(totalPrices[groupEntry.key], 0, 'COMMA')}"></p>
+						</div>
+					</div>
+					<div class="right_border"></div>
+				</div>
+			</div>
+			<div th:if="${!order.last}" class="order_border"></div>
+		</div>
+	</div>
+</body>
+
+</html>

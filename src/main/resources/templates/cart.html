@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>カート</title>
+	<link rel="stylesheet" th:href="@{/css/cart.css}" />
+</head>
+
+<body>
+	<!-- 共通のヘッダーをインクルード -->
+	<div th:replace="fragments/header.html"></div>
+	<div class="container">
+		<h1 class="page_title">カート</h1>
+		<div class="cart">
+			<div class="cart_left">
+				<div class="cart_item" th:each="cartItem : ${cartItems}">
+					<!--消す✖ボタン-->
+					<div class="delete_btn">
+						<form th:action="@{/removeCartItem/{productId}(productId=${cartItem.product.id})}"
+							method="post">
+							<button type="submit"><img src="img/close.png" alt="削除"></button>
+						</form>
+					</div>
+					<div class="product_image">
+						<img th:src="${cartItem.product.imagePath}" alt="商品画像">
+					</div>
+					<div class="cartItem_detail">
+						<p class="product_name" th:text="${cartItem.product.name}"></p>
+						<form th:action="@{/updateCartItemQuantity}" method="post" th:object="${updateCartItem}">
+							<input type="hidden" th:name="productId" th:value="${cartItem.product.id}" />
+							<label class="product_quantity_title" for="quantity">数量</label><br>
+							<!--					<input type="number" th:name="quantity" th:value="${cartItem.quantity}" />-->
+							<select class="product_quantity" name="quantity" id="quantity"
+								onchange="this.form.submit()">
+								<!-- プルダウンメニューの選択肢を在庫数に合わせて動的に生成 -->
+								<option th:each="n : ${#numbers.sequence(1, cartItem.product.stock)}" th:value="${n}"
+									th:selected="${n == cartItem.quantity}" th:text="${n}">
+								</option>
+							</select>
+
+							<span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"
+								style="color: red;"></span>
+							<!--							<button type="submit">更新</button>-->
+						</form>
+						<p class="product_price"
+							th:text=" '￥' + ${#numbers.formatInteger(cartItem.product.price, 0, 'COMMA')}"></p>
+					</div>
+				</div>
+			</div>
+			<div class="cart_right">
+				<h3 class="total_price_title">アイテム小計</h3>
+				<p class="total_price"> ¥<span th:text="${#numbers.formatInteger(totalPrice, 0, 'COMMA')}"></span>(税込み)
+				</p>
+				<div class="item_border"></div>
+				<form th:action="@{/checkStocks}" method="post" id="checkStocksForm">
+					<button class="go_payment" type="submit"><img src="/img/payment.png" alt="お支払い">お支払いに進む</button>
+				</form>
+				<a class="go_products" th:href="@{/products}">お買い物を続ける</a>
+				<!-- エラーメッセージがある場合に表示 -->
+				<div th:if="${error}" class="error-message" style="color: red;">
+					<p th:text="${error}"></p>
+					<!-- 不足している商品のリストを表示 -->
+					<ul th:if="${insufficientProducts}">
+						<li th:each="product : ${insufficientProducts}">
+							<p th:text="${'在庫不足の商品: ' + product.name}"></p>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		document.querySelectorAll('.product_quantity').forEach(function (selectElement) {
+			selectElement.addEventListener('change', function () {
+				var form = this.closest('form');
+				var formData = new FormData(form);
+				var userId = form.getAttribute('action').split('/').pop();
+				formData.append('_method', 'POST'); // Spring BootではPATCHをシミュレートするために必要
+				fetch('/updateCartItemQuantity', {
+					method: 'POST',
+					body: formData
+					/*}).then(response => {// レスポンスの処理（省略可）
+						if (response.ok) {
+							// 成功時の処理を記述
+						} else {
+							// エラー時の処理を記述
+						}
+					}).catch(error => {
+						console.error('Error:', error);*/
+				});
+			});
+		});
+
+	</script>
+</body>
+
+</html>

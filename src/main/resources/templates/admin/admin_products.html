@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>商品管理</title>
+	<link rel="stylesheet" th:href="@{/css/admin/admin_products.css}" />
+</head>
+
+<body>
+	<!-- 共通のヘッダーをインクルード -->
+	<div th:replace="fragments/header.html"></div>
+
+	<div class="container">
+		<h1 class="page_title">商品管理</h1>
+		<div class="add_and_search">
+			<div class="add">
+				
+				<a th:href="@{/admin/products/create_product}" class="create_product">商品登録</a>
+			</div>
+
+			<div class="search">
+<!--				<h2>商品検索</h2>-->
+				<!--検索フォーム-->
+				<form th:action="@{/admin/productsSearch}" method="get">
+					<label for="searchTerm">商品検索</label>
+					<input class="search_from" type="text" id="searchTerm" name="searchTerm">
+					<button class="black_btn" type="submit">検索</button>
+				</form>
+			</div>
+		</div>
+		
+		<div class="products">
+			<table>
+				<tr>
+					<th class="product_title_image">商品画像</th>
+					<th class="product_data">商品タイトル</th>
+					<th class="product_data">商品カテゴリー</th>
+					<th class="product_data">商品価額</th>
+					<th class="product_title_description">商品説明</th>
+					<th class="edit">編集</th>
+				</tr>
+				<tr th:each="product : ${products}">
+					<!--					<td th:text="${product.id}"></td>-->
+					<td>
+						<img class="product_image" th:src="${product.imagePath}" alt="">
+					</td>
+					<td class="product_name" th:text="${product.name}"></td>
+					<td class="product_category"><!--spanは省略可能だが空欄の状態は場所取っとかない-->
+						<span th:each="category : ${categories}" th:if="${category.id == product.categoryId}"
+							th:text="${category.categoryName}">
+						</span>
+					</td><!-- th:text="${product.categoryId}"></td-->
+					<td class="product_price" th:text="${#numbers.formatInteger(product.price, 0, 'COMMA')}"></td>
+
+					<td class="product_description" th:text="${product.description}"></td>
+					<td><a class="edit_btn"
+							th:href="@{/admin/products/product_detail/{productId}(productId=${product.id})}">編集</a>
+					</td>
+
+			</table>
+		</div>
+		
+	</div>
+</body>
+
+</html>

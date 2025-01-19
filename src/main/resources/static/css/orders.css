@@ -1,0 +1,123 @@
+.container {
+	flex-direction: column;
+}
+
+.page_title {
+	height: 35px;
+	padding: 55px 0 20px 0;
+
+	font-family: Noto Sans CJK JP;
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 35px;
+	text-align: center;
+}
+
+.order {
+	display: flex;
+}
+
+.order_left {
+	flex: 1;
+	padding: 0 20px;
+	display: flex;
+	flex-direction: column;
+}
+
+.order_items {
+	display: flex;
+	padding-bottom: 20px;
+	margin-left: 60px;
+}
+
+.product_image {
+	width: 140px;
+	height: 140px;
+	background-color: #F6F6F6;
+}
+
+.cartItem_detail {
+	align-self: center;
+	margin-left: 20px;
+}
+
+.order_product_name {
+	font-family: Noto Sans CJK JP;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 20px;
+	text-align: left;
+	color: #343434;
+	margin-bottom: 5px;
+}
+
+.order_product_quantity {
+	font-family: Noto Sans CJK JP;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 20px;
+	color: #8E8E8E;
+	margin-bottom: 5px;
+}
+
+.order_product_price {
+	font-family: Noto Sans CJK JP;
+	font-size: 20px;
+	font-weight: 700;
+	line-height: 29px;
+	text-align: left;
+	color: #343434;
+}
+
+.order_right {
+	flex: 1;
+	padding: 0 20px;
+	/*	display: flex;*/
+	/*	flex-direction: column;*/
+}
+
+.date,
+.price {
+	display: flex;
+}
+
+.order_date,
+.arrival_date {
+	flex: 50%;
+}
+
+.item_totle,
+.postage,
+.totle_price {
+	flex: auto;
+}
+
+.right_title {
+	font-family: Noto Sans CJK JP;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 20px;
+	color: #8E8E8E;
+}
+
+.right_value {
+	font-family: Noto Sans CJK JP;
+	font-size: 28px;
+	font-weight: 700;
+	line-height: 41px;
+	color: #343434;
+}
+
+.right_border {
+	border: 1px solid #CDCDCD;
+	width: 500px;
+	height: 0;
+	margin: 10px 0 20px;
+}
+
+.order_border {
+	border: 1px solid #CDCDCD;
+	width: 1040px;
+	height: 0;
+	margin: 10px auto 30px auto;
+}
